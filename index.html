@@ -3,143 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danish Salary Tracker Pro V3.2</title>
+    <title>Danish Salary Tracker Pro</title>
     
+    <!-- PWA Manifest Data URI for Single-File Deployment -->
+    <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Danish%20Salary%20Tracker%20Pro%22%2C%22short_name%22%3A%22Salary%20Tracker%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23f0f4f8%22%2C%22theme_color%22%3A%22%232c3e50%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg+xml%2C%253Csvg%2520xmlns%253D%2522http%253A%252F%252Fwww.w3.org%252F2000%252Fsvg%2522%2520viewBox%253D%25220%25200%2520512%2520512%2522%253E%253Crect%2520width%253D%2522512%2522%2520height%253D%2522512%2522%2520rx%253D%2522100%2522%2520fill%253D%2522%25232c3e50%2522%252F%253E%253Ctext%2520x%253D%252250%2525%2522%2520y%253D%252255%2525%2522%2520font-size%253D%2522220%2522%2520font-family%253D%2522Arial%2522%2520fill%253D%2522%252327ae60%2522%2520font-weight%253D%2522bold%2522%2520text-anchor%253D%2522middle%2522%2520dominant-baseline%253D%2522middle%2522%253EDKK%253C%252Ftext%253E%253C%252Fsvg%253E%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fsvg+xml%22%2C%22purpose%22%3A%22any%20maskable%22%7D%5D%7D">
     <meta name="theme-color" content="#2c3e50">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
     <style>
-        :root {
-            --bg: #f3f6fb;
-            --card: #ffffff;
-            --text: #1e293b;
-            --border: #dbe3ee;
-            --primary: #2980b9;
-            --success: #27ae60;
-            --warning: #f39c12;
-            --danger: #e74c3c;
-        }
-        body.dark {
-            --bg: #0f172a;
-            --card: #1e293b;
-            --text: #f8fafc;
-            --border: #334155;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            background: var(--bg); color: var(--text);
-            font-family: 'Segoe UI', Arial, sans-serif;
-            padding: 15px; transition: 0.3s;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 15px;
+            color: #333;
         }
         .container {
-            max-width: 900px; margin: auto; background: var(--card);
-            border-radius: 18px; padding: 20px; box-shadow: 0 10px 35px rgba(0,0,0,.08);
+            max-width: 700px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
         }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .header h1 { font-size: 24px; }
-        .theme-btn { border: none; cursor: pointer; font-size: 24px; background: none; }
+        h2 { text-align: center; color: #2c3e50; margin-bottom: 5px; }
+        .subtitle { text-align: center; color: #7f8c8d; font-size: 14px; margin-bottom: 20px; }
         
-        .install-btn {
-            width: 100%; padding: 12px; margin-bottom: 15px; border: none;
-            border-radius: 10px; color: white; font-weight: bold; background: var(--primary);
-            cursor: pointer; display: none;
+        .pwa-install-btn {
+            display: none;
+            width: 100%;
+            padding: 12px;
+            background-color: #2980b9;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            text-align: center;
         }
-        
-        /* DASHBOARD */
-        .dashboard { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
-        .card { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 15px; text-align: center; }
-        .card-title { font-size: 13px; opacity: .8; }
-        .card-value { margin-top: 8px; font-size: 18px; font-weight: bold; }
-        
-        .green { color: var(--success); }
-        .blue { color: var(--primary); }
-        .orange { color: var(--warning); }
-        .purple { color: #8e44ad; }
-        
-        /* FORM */
-        .section-title { margin-top: 20px; margin-bottom: 10px; font-size: 16px; font-weight: 700; color: var(--primary); }
-        .form-group { margin-bottom: 12px; }
-        label { display: block; margin-bottom: 6px; font-size: 14px; font-weight: 600; }
-        input, select { width: 100%; padding: 10px; border-radius: 10px; border: 1px solid var(--border); background: var(--card); color: var(--text); }
-        .row { display: flex; gap: 10px; margin-bottom: 10px; }
+
+        .section-title {
+            font-size: 16px; font-weight: bold; color: #2980b9;
+            border-bottom: 2px solid #edf2f7; padding-bottom: 5px; margin-top: 20px; margin-bottom: 15px;
+        }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 14px; }
+        input, select {
+            width: 100%; padding: 10px; border: 1px solid #cbd5e1;
+            border-radius: 8px; box-sizing: border-box; font-size: 14px;
+        }
+        .row { display: flex; gap: 12px; }
         .col { flex: 1; }
         
-        .checkbox { display: flex; gap: 10px; align-items: center; margin-top: 12px; padding: 12px; border-radius: 10px; background: var(--bg); cursor: pointer; }
-        .checkbox input { width: auto; cursor: pointer; }
-        
-        /* CALENDAR */
-        .calendar { border: 1px solid var(--border); border-radius: 12px; max-height: 400px; overflow-y: auto; padding: 8px; background: var(--bg); }
-        .day-row { display: flex; justify-content: space-between; align-items: center; gap: 5px; padding: 8px; border-radius: 8px; background: var(--card); margin-bottom: 6px; }
-        .day-label { width: 110px; font-size: 12px; font-weight: 600; }
+        /* Calendar Styles */
+        .calendar-list {
+            max-height: 400px; overflow-y: auto;
+            border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px; background: #fafafa;
+        }
+        .day-row {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 8px; border-bottom: 1px solid #edf2f7; background: #fff; margin-bottom: 5px; border-radius: 6px;
+        }
+        .day-label { width: 110px; font-size: 13px; font-weight: 600; }
         .shift-buttons { display: flex; gap: 4px; }
-        .shift-btn { border: 1px solid var(--border); background: var(--card); color: var(--text); border-radius: 6px; cursor: pointer; padding: 5px 8px; font-size: 11px; }
+        .btn-shift {
+            padding: 6px 10px; font-size: 11px; font-weight: 600; border: 1px solid #cbd5e1;
+            background: #fff; border-radius: 6px; cursor: pointer; transition: all 0.2s;
+        }
+        .btn-shift.active-morning { background: #e8f4f8; border-color: #2980b9; color: #2980b9; }
+        .btn-shift.active-evening { background: #fef5e7; border-color: #f39c12; color: #e67e22; }
+        .btn-shift.active-off { background: #f2f3f4; border-color: #bdc3c7; color: #7f8c8d; }
         
-        .active-morning { background: #dff4ff; color: #2980b9; border-color: #2980b9; }
-        .active-evening { background: #fff2d8; color: #e67e22; border-color: #e67e22; }
-        .active-off { background: #ececec; color: #666; border-color: #ccc; }
-        .hours { display: flex; gap: 5px; width: 130px; }
-        .hours input { text-align: center; padding: 6px; }
-        
-        /* ACTIONS & TOOLS */
-        .action-btn { width: 100%; padding: 12px; margin-top: 10px; border: none; border-radius: 10px; color: white; font-weight: bold; cursor: pointer; }
-        .btn-calc { background: var(--success); }
-        .btn-save { background: var(--primary); }
-        
-        .result-box { margin-top: 20px; border: 1px solid var(--border); border-radius: 12px; padding: 15px; display: none; background: var(--bg); }
-        .result-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed var(--border); font-size: 14px; }
-        .result-final { font-size: 20px; font-weight: bold; color: var(--success); margin-top: 10px; text-align: right; }
-        
-        /* ANALYTICS GRID */
-        .analytics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-top: 15px; }
-        .analytics-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 15px; text-align: center; }
-        .analytics-card h4 { margin: 0; font-size: 13px; opacity: .8; }
-        .analytics-card div { margin-top: 8px; font-size: 18px; font-weight: bold; color: var(--success); }
-        
-        .chart-wrapper { margin-top: 15px; height: 300px; background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 10px; }
-        .history-list { margin-top: 15px; max-height: 300px; overflow-y: auto; }
-        .history-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 12px; margin-bottom: 10px; }
-        .history-header { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px; }
-        .history-body { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; font-size: 13px; }
-        .delete-history-btn { margin-top: 10px; width: 100%; border: none; background: var(--danger); color: white; padding: 8px; border-radius: 6px; cursor: pointer; }
-        .empty-history { text-align: center; padding: 20px; opacity: .7; }
-        
-        .button-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 15px; }
-        .button-grid button { border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; background: var(--primary); color: white; font-size: 12px; }
-        .button-grid .danger-btn { background: var(--danger); }
+        .hour-inputs { display: flex; gap: 5px; width: 130px; }
+        .hour-inputs input { padding: 6px; font-size: 12px; text-align: center; width: 60px; box-sizing: border-box; }
 
-        @media(max-width: 768px) {
-            .dashboard, .button-grid { grid-template-columns: repeat(2, 1fr); }
-            .row { flex-direction: column; }
-            .day-row { flex-direction: column; align-items: flex-start; gap: 8px; }
-            .day-label, .hours { width: 100%; }
-            .analytics-grid { grid-template-columns: 1fr 1fr; }
-            .history-body { grid-template-columns: 1fr; }
+        .checkbox-group {
+            display: flex; align-items: center; gap: 10px; background: #f8fafc;
+            padding: 12px; border-radius: 8px; margin-top: 10px;
+        }
+        .checkbox-group input { width: auto; }
+        
+        button.calc-btn {
+            width: 100%; padding: 14px; background-color: #27ae60; border: none;
+            color: white; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; margin-top: 20px;
+        }
+        button.calc-btn:hover { background-color: #219653; }
+
+        /* Results Box */
+        .result-box {
+            margin-top: 25px; padding: 20px; background-color: #f8fafc;
+            border: 1px solid #e2e8f0; border-radius: 12px; display: none;
+        }
+        .result-row {
+            display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+        .result-row.highlight { color: #c0392b; }
+        .result-row.final {
+            font-weight: bold; font-size: 18px; color: #27ae60; border-top: 2px solid #cbd5e1; padding-top: 12px;
+        }
+        .holiday-box {
+            background-color: #eaf2f8; border: 1px solid #a9cce3; padding: 12px; border-radius: 6px; margin-top: 15px;
+        }
+        .holiday-split {
+            display: flex; justify-content: space-between; font-size: 12px; color: #566573; margin-top: 4px;
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <button id="installApp" class="install-btn">📲 Install Salary Tracker App</button>
+    <button id="installApp" class="pwa-install-btn">📲 Install Salary Tracker App</button>
 
-    <div class="header">
-        <h1>🇩🇰 Danish Salary Tracker V3.2</h1>
-        <button class="theme-btn" onclick="toggleTheme()">🌙</button>
-    </div>
+    <h2>Danish Lønseddel Pro Tracker</h2>
+    <div class="subtitle">Full-featured Interactive Shift & PWA System</div>
 
-    <div class="dashboard">
-        <div class="card"><div class="card-title">Net Salary</div><div id="dashNet" class="card-value green">0.00 kr.</div></div>
-        <div class="card"><div class="card-title">Hours</div><div id="dashHours" class="card-value blue">0.00 h</div></div>
-        <div class="card"><div class="card-title">Evening</div><div id="dashEvening" class="card-value orange">0.00 h</div></div>
-        <div class="card"><div class="card-title">Fritvalg Acc.</div><div id="dashFritvalg" class="card-value purple">0.00 kr.</div></div>
-    </div>
-
-    <div class="section-title">Salary Period</div>
+    <!-- Period Selection -->
     <div class="form-group">
-        <select id="salaryMonth">
+        <label for="salaryMonth">Select Salary Period (21st Prev - 20th Current):</label>
+        <select id="salaryMonth" onchange="generateCalendar()">
             <option value="0">January Period (Dec 21 - Jan 20)</option>
             <option value="1">February Period (Jan 21 - Feb 20)</option>
             <option value="2">March Period (Feb 21 - Mar 20)</option>
@@ -155,512 +140,417 @@
         </select>
     </div>
 
-    <div class="section-title">Daily Shift Input (<span id="periodLabel"></span>)</div>
-    <div id="calendarContainer" class="calendar"></div>
+    <!-- Interactive Calendar List -->
+    <div class="section-title">Daily Shifts Input (<span id="periodLabel"></span>)</div>
+    <div class="calendar-list" id="calendarContainer">
+        <!-- Rows will be injected by JavaScript -->
+    </div>
 
-    <div class="section-title">Configuration Settings</div>
+    <!-- Rates & Rules -->
+    <div class="section-title">Standard Configurations</div>
     <div class="row">
         <div class="col">
-            <label for="hourlyRate">Hourly Rate (DKK):</label>
-            <input type="number" id="hourlyRate" value="138.67" step="0.01">
+            <label for="rate">Hourly Rate (DKK):</label>
+            <input type="number" id="rate" value="138.67" step="0.01">
         </div>
         <div class="col">
             <label for="fradrag">Skattefradrag (DKK):</label>
             <input type="number" id="fradrag" value="6015">
         </div>
     </div>
-    <div class="row">
-        <div class="col">
-            <label for="previousFritvalg" style="color:#8e44ad;">Previous Acc. Fritvalg Balance (DKK):</label>
-            <input type="number" id="previousFritvalg" value="0.00" step="0.01">
+
+    <div class="section-title">Fritvalg Bonus Settings (10%)</div>
+    <div class="form-group">
+        <label for="prevFritvalg">Previous Accumulated Fritvalg (DKK):</label>
+        <input type="number" id="prevFritvalg" value="0.00" step="0.01">
+    </div>
+    <div class="checkbox-group">
+        <input type="checkbox" id="isPayoutMonth">
+        <label for="isPayoutMonth" style="margin-bottom: 0; cursor: pointer;">
+            <strong>Payout Fritvalg this month?</strong> (Check to release accumulated balance)
+        </label>
+    </div>
+
+    <!-- Hidden standard rules but adjustable -->
+    <input type="hidden" id="skatPercent" value="38">
+    <input type="hidden" id="pensionPercent" value="2">
+    <input type="hidden" id="atp" value="66">
+
+    <button class="calc-btn" onclick="calculateTotalSalary()">Calculate Tracker Data</button>
+
+    <!-- Detailed Result Box -->
+    <div class="result-box" id="resultBox">
+        <div class="section-title" style="margin-top: 0;">Statement Summary</div>
+        
+        <div class="result-row" style="background:#eef7f9; font-weight:600;">
+            <span>Total Logged Hours:</span>
+            <span id="resTotalHours">0.00 hrs</span>
         </div>
-        <div class="col">
-            <label for="atp">ATP-bidrag (DKK):</label>
-            <input type="number" id="atp" value="66">
+        <div class="result-row" style="background:#fefaf2; font-weight:600;">
+            <span>Total Evening Hours:</span>
+            <span id="resTotalEvHours">0.00 hrs</span>
+        </div>
+        <div class="result-row">
+            <span>Basic Pay (Ferieberettiget løn):</span>
+            <span id="resBasePay">0.00 kr.</span>
+        </div>
+        <div class="result-row">
+            <span>Evening Tillæg (Hours × 25 DKK):</span>
+            <span id="resEveningPay">0.00 kr.</span>
+        </div>
+        <div class="result-row">
+            <span>Current Month's Saved Fritvalg (10%):</span>
+            <span id="resFritvalgSaved">0.00 kr.</span>
+        </div>
+        <div class="result-row" id="fritvalgPayoutRow" style="display:none; background: #e8f8f5; font-weight: 600;">
+            <span>Total Fritvalg Payout (Prev + Current):</span>
+            <span id="resFritvalgPayout">0.00 kr.</span>
+        </div>
+        <div class="result-row" style="font-weight: 600; border-top: 1px solid #cbd5e1;">
+            <span>Gross Income:</span>
+            <span id="resGrossIncome">0.00 kr.</span>
+        </div>
+        <div class="result-row highlight">
+            <span>Pension Deduction (2%):</span>
+            <span id="resPension">0.00 kr.</span>
+        </div>
+        <div class="result-row highlight">
+            <span>ATP-bidrag:</span>
+            <span id="resATP">0.00 kr.</span>
+        </div>
+        <div class="result-row" style="font-weight: 600;">
+            <span>A-indkomst:</span>
+            <span id="resAIndkomst">0.00 kr.</span>
+        </div>
+        <div class="result-row highlight">
+            <span>AM-bidrag (8%):</span>
+            <span id="resAMBidrag">0.00 kr.</span>
+        </div>
+        <div class="result-row">
+            <span>Tax-free Allowance (Fradrag):</span>
+            <span id="resUsedFradrag">0.00 kr.</span>
+        </div>
+        <div class="result-row highlight">
+            <span>A-skat Deduction (38%):</span>
+            <span id="resASkat">0.00 kr.</span>
+        </div>
+        <div class="result-row final">
+            <span>Net Payout to Bank:</span>
+            <span id="resNetSalary">0.00 kr.</span>
+        </div>
+        
+        <!-- Holiday Money Breakdown Box -->
+        <div class="holiday-box">
+            <div style="display: flex; justify-content: space-between; font-weight: bold; color: #1b4f72;">
+                <span>Net Feriepenge to Feriekonto:</span>
+                <span id="resNetHolidayMoney">0.00 kr.</span>
+            </div>
+            <div class="holiday-split"><span>Gross Holiday (12.5%):</span><span id="resGrossHoliday">0.00 kr.</span></div>
+            <div class="holiday-split"><span>AM-bidrag (8%):</span><span id="resHolidayAM">0.00 kr.</span></div>
+            <div class="holiday-split"><span>A-skat (38%):</span><span id="resHolidaySkat">0.00 kr.</span></div>
         </div>
     </div>
-
-    <div class="checkbox">
-        <input type="checkbox" id="payoutFritvalg">
-        <label for="payoutFritvalg" style="margin:0; cursor:pointer;"><strong>Pay Out ALL Accumulated Fritvalg This Month?</strong></label>
-    </div>
-
-    <button class="action-btn btn-calc" onclick="calculateSalary()">Calculate Salary Data</button>
-    <button class="action-btn btn-save" onclick="saveCurrentMonth()">💾 Save This Month to History</button>
-
-    <div id="resultBox" class="result-box">
-        <div class="result-row"><span>Base Pay (Hours × Rate):</span><span id="resBasePay">0.00 kr.</span></div>
-        <div class="result-row"><span>Evening Supplement (25 kr/h):</span><span id="resEveningPay">0.00 kr.</span></div>
-        <div class="result-row"><span>This Month's New Fritvalg (10%):</span><span id="resFritCurrent">0.00 kr.</span></div>
-        <div class="result-row"><span>Pension Deduction (2%):</span><span id="resPension">0.00 kr.</span></div>
-        <div class="result-row" style="font-weight:600;"><span>Gross Taxable Income:</span><span id="resGrossIncome">0.00 kr.</span></div>
-        <div class="result-row"><span>AM-bidrag (8%):</span><span id="resAM">0.00 kr.</span></div>
-        <div class="result-row"><span>A-skat Tax (38%):</span><span id="resASkat">0.00 kr.</span></div>
-        <div class="result-row" style="color:#c0392b;"><span>Net Holiday Money (12.5% to Feriekonto):</span><span id="resHoliday">0.00 kr.</span></div>
-        <div id="resNetSalary" class="result-final">Net Payout: 0.00 kr.</div>
-    </div>
-
-    <div class="section-title">Analytics & History Dashboard</div>
-    <div class="analytics-grid">
-        <div class="analytics-card"><h4>Total Saved Records</h4><div id="totalRecords">0</div></div>
-        <div class="analytics-card"><h4>Average Salary</h4><div id="avgSalary">0.00 kr.</div></div>
-        <div class="analytics-card"><h4>Highest Salary</h4><div id="highestSalary">0.00 kr.</div></div>
-        <div class="analytics-card"><h4>Total Hours Worked</h4><div id="allHours">0.00 h</div></div>
-    </div>
-
-    <div class="chart-wrapper">
-        <canvas id="salaryChart"></canvas>
-    </div>
-
-    <div class="section-title">Saved History Logs</div>
-    <div id="historyContainer"></div>
-
-    <div class="button-grid">
-        <button onclick="exportCSV()">📊 Export CSV</button>
-        <button onclick="exportBackup()">📤 Backup JSON</button>
-        <button onclick="document.getElementById('restoreFile').click()">📥 Restore Backup</button>
-        <button onclick="clearHistory()" class="danger-btn">🗑️ Clear Data</button>
-    </div>
-    <input type="file" id="restoreFile" accept=".json" style="display:none" onchange="restoreBackup(event)">
 </div>
 
 <script>
-    let historyData = JSON.parse(localStorage.getItem("salaryHistory")) || [];
-    let salaryChartInstance = null;
-    let lastCalculatedData = null;
-
-    document.addEventListener("DOMContentLoaded", () => {
-        loadSettings();
+    document.addEventListener("DOMContentLoaded", function() {
         generateCalendar();
-        renderHistory();
-        updateAnalytics();
-        
-        document.getElementById("salaryMonth").addEventListener("change", generateCalendar);
-        document.addEventListener("input", (e) => {
-            if (e.target.id && (e.target.id.startsWith("tot_") || e.target.id.startsWith("eve_"))) {
-                const row = e.target.closest(".day-row");
-                if (row) clearButtonState(row);
-                saveCurrentPeriod();
-            }
-        });
+        setupAutoSaveLoad();
     });
 
-    function toggleTheme() {
-        const isDark = document.body.classList.toggle("dark");
-        localStorage.setItem("theme", isDark ? "dark" : "light");
-        document.querySelector(".theme-btn").innerText = isDark ? "☀️" : "🌙";
-        if (salaryChartInstance) updateChart();
-    }
-
-    function getPeriodYears(month) {
-        const currentYear = new Date().getFullYear();
-        let startYear = currentYear, endYear = currentYear;
-        if (month === 0) startYear = currentYear - 1;
-        return { startYear, endYear };
-    }
-
     function generateCalendar() {
-        const container = document.getElementById("calendarContainer");
-        container.innerHTML = "";
-        const month = parseInt(document.getElementById("salaryMonth").value);
-        const years = getPeriodYears(month);
+        const container = document.getElementById('calendarContainer');
+        if (!container) return;
+        container.innerHTML = '';
         
-        let startMonth = month - 1 < 0 ? 11 : month - 1;
-        const startDate = new Date(years.startYear, startMonth, 21);
-        const endDate = new Date(years.endYear, month, 20);
+        const currentYear = 2026; 
+        const targetMonth = parseInt(document.getElementById('salaryMonth').value);
+        
+        let startMonth = targetMonth - 1;
+        let startYear = currentYear;
+        if (startMonth < 0) {
+            startMonth = 11;
+            startYear = currentYear - 1;
+        }
+        
+        const startDate = new Date(startYear, startMonth, 21);
+        const endDate = new Date(currentYear, targetMonth, 20);
+        
+        const options = { month: 'short', day: 'numeric' };
+        document.getElementById('periodLabel').innerText = startDate.toLocaleDateString('en-US', options) + " - " + endDate.toLocaleDateString('en-US', options);
 
-        document.getElementById("periodLabel").innerText = 
-            startDate.toLocaleDateString("en-US", { month: "short", day: "numeric" }) + " → " +
-            endDate.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
-
-        let current = new Date(startDate);
+        let loopDate = new Date(startDate);
         let dayIndex = 0;
 
-        while (current <= endDate) {
-            createDayRow(current, dayIndex, container);
-            current.setDate(current.getDate() + 1);
+        while (loopDate <= endDate) {
+            const dayOfWeek = loopDate.getDay(); 
+            const dateString = loopDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+            
+            let morningLabel = "6-14";
+            let eveningLabel = "14-22";
+            if (dayOfWeek === 5) { morningLabel = "6-13:30"; eveningLabel = "6-13:30"; }
+            else if (dayOfWeek === 6) { morningLabel = "7-15"; eveningLabel = "7-15"; }
+            else if (dayOfWeek === 0) { morningLabel = "9-17"; eveningLabel = "9-17"; }
+
+            const row = document.createElement('div');
+            row.className = 'day-row';
+            row.innerHTML = `
+                <div class="day-label">${dateString}</div>
+                <div class="shift-buttons">
+                    <button class="btn-shift" onclick="setPresetShift(${dayIndex}, ${dayOfWeek}, 'morning', this)">${morningLabel}</button>
+                    <button class="btn-shift" onclick="setPresetShift(${dayIndex}, ${dayOfWeek}, 'evening', this)">${eveningLabel}</button>
+                    <button class="btn-shift" onclick="setPresetShift(${dayIndex}, ${dayOfWeek}, 'off', this)">Off</button>
+                </div>
+                <div class="hour-inputs">
+                    <input type="number" id="totH_${dayIndex}" placeholder="Tot" step="0.01" value="0.00" onchange="clearPresets(${dayIndex}); saveToLocalStorage();">
+                    <input type="number" id="evH_${dayIndex}" placeholder="Eve" step="0.01" value="0.00" onchange="clearPresets(${dayIndex}); saveToLocalStorage();">
+                </div>
+            `;
+            container.appendChild(row);
+            
+            loopDate.setDate(loopDate.getDate() + 1);
             dayIndex++;
         }
-        container.dataset.days = dayIndex;
-        loadCurrentPeriod();
+        container.setAttribute('data-days', dayIndex);
+        loadFromLocalStorage();
     }
 
-    function createDayRow(date, index, container) {
-        const weekday = date.getDay();
-        const label = date.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
-        let morningText = "6-14", eveningText = "14-22";
-
-        if (weekday === 5) { morningText = "6-13:30"; eveningText = "6-13:30"; }
-        else if (weekday === 6) { morningText = "7-15"; eveningText = "7-15"; }
-        else if (weekday === 0) { morningText = "9-17"; eveningText = "9-17"; }
-
-        const row = document.createElement("div");
-        row.className = "day-row";
-        row.innerHTML = `
-            <div class="day-label">${label}</div>
-            <div class="shift-buttons">
-                <button class="shift-btn" onclick="setPresetShift(${index}, ${weekday}, 'morning', this)">${morningText}</button>
-                <button class="shift-btn" onclick="setPresetShift(${index}, ${weekday}, 'evening', this)">${eveningText}</button>
-                <button class="shift-btn" onclick="setPresetShift(${index}, ${weekday}, 'off', this)">Off</button>
-            </div>
-            <div class="hours">
-                <input id="tot_${index}" type="number" step="0.01" value="0.00" placeholder="Total" onchange="validateHours(${index})">
-                <input id="eve_${index}" type="number" step="0.01" value="0.00" placeholder="Evening" onchange="validateHours(${index})">
-            </div>
-        `;
-        container.appendChild(row);
-    }
-
-    function clearButtonState(row) {
-        row.querySelectorAll(".shift-btn").forEach(btn => btn.classList.remove("active-morning", "active-evening", "active-off"));
-    }
-
-    function setPresetShift(index, weekday, type, button) {
-        const row = button.closest(".day-row");
-        clearButtonState(row);
-        const total = document.getElementById(`tot_${index}`);
-        const evening = document.getElementById(`eve_${index}`);
-
-        if (type === "off") {
-            button.classList.add("active-off");
-            total.value = "0.00"; evening.value = "0.00";
-        } else if (weekday === 5) {
-            button.classList.add("active-morning");
-            total.value = "7.00"; evening.value = "0.00";
-        } else if (weekday === 6) {
-            button.classList.add("active-morning");
-            total.value = "7.50"; evening.value = "0.00";
-        } else if (weekday === 0) {
-            button.classList.add("active-evening");
-            total.value = "7.50"; evening.value = "7.50";
-        } else if (type === "morning") {
-            button.classList.add("active-morning");
-            total.value = "7.50"; evening.value = "0.00";
-        } else if (type === "evening") {
-            button.classList.add("active-evening");
-            total.value = "7.50"; evening.value = "3.75";
+    function setPresetShift(dayIndex, dayOfWeek, type, buttonEl) {
+        const row = buttonEl.parentElement;
+        const buttons = row.getElementsByClassName('btn-shift');
+        for (let btn of buttons) {
+            btn.classList.remove('active-morning', 'active-evening', 'active-off');
         }
-        saveCurrentPeriod();
-        calculateSalary();
+
+        const totInput = document.getElementById(`totH_${dayIndex}`);
+        const evInput = document.getElementById(`evH_${dayIndex}`);
+
+        if (type === 'off') {
+            buttonEl.classList.add('active-off');
+            totInput.value = "0.00";
+            evInput.value = "0.00";
+        } else {
+            if (dayOfWeek === 5) { 
+                buttonEl.classList.add('active-morning');
+                totInput.value = "7.00"; 
+                evInput.value = "0.00";
+            } 
+            else if (dayOfWeek === 6) { 
+                buttonEl.classList.add('active-morning');
+                totInput.value = "7.50"; 
+                evInput.value = "0.00";
+            } 
+            else if (dayOfWeek === 0) { 
+                buttonEl.classList.add('active-evening');
+                totInput.value = "7.50"; 
+                evInput.value = "7.50"; 
+            } 
+            else {
+                if (type === 'morning') {
+                    buttonEl.classList.add('active-morning');
+                    totInput.value = "7.50"; 
+                    evInput.value = "0.00";
+                } else if (type === 'evening') {
+                    buttonEl.classList.add('active-evening');
+                    totInput.value = "7.50";  
+                    evInput.value = "3.75";   
+                }
+            }
+        }
+        saveToLocalStorage();
     }
 
-    function validateHours(index) {
-        const tot = document.getElementById(`tot_${index}`);
-        const eve = document.getElementById(`eve_${index}`);
-        if (parseFloat(tot.value) < 0) tot.value = "0.00";
-        if (parseFloat(eve.value) < 0) eve.value = "0.00";
-        if (parseFloat(eve.value) > parseFloat(tot.value)) eve.value = tot.value;
-        saveCurrentPeriod();
+    function clearPresets(dayIndex) {
+        const totInput = document.getElementById(`totH_${dayIndex}`);
+        if(!totInput) return;
+        const row = totInput.parentElement.parentElement;
+        const buttons = row.getElementsByClassName('btn-shift');
+        for (let btn of buttons) {
+            btn.classList.remove('active-morning', 'active-evening', 'active-off');
+        }
     }
 
-    function calculateSalary() {
-        const container = document.getElementById("calendarContainer");
-        const totalDays = parseInt(container.dataset.days) || 0;
-        let totalHours = 0, totalEveHours = 0;
+    function calculateTotalSalary() {
+        const container = document.getElementById('calendarContainer');
+        if (!container) return;
+        const totalDays = parseInt(container.getAttribute('data-days')) || 0;
+        
+        let totalHoursLogged = 0;
+        let totalEveningHoursLogged = 0;
 
         for (let i = 0; i < totalDays; i++) {
-            totalHours += parseFloat(document.getElementById(`tot_${i}`).value) || 0;
-            totalEveHours += parseFloat(document.getElementById(`eve_${i}`).value) || 0;
+            const hInput = document.getElementById(`totH_${i}`);
+            const evInput = document.getElementById(`evH_${i}`);
+            const h = hInput ? parseFloat(hInput.value) || 0 : 0;
+            const ev = evInput ? parseFloat(evInput.value) || 0 : 0;
+            totalHoursLogged += h;
+            totalEveningHoursLogged += ev;
         }
 
-        const rate = parseFloat(document.getElementById("hourlyRate").value) || 138.67;
-        const fradrag = parseFloat(document.getElementById("fradrag").value) || 6015;
-        const prevFritvalg = parseFloat(document.getElementById("previousFritvalg").value) || 0;
-        const atp = parseFloat(document.getElementById("atp").value) || 66;
-        const isPayout = document.getElementById("payoutFritvalg").checked;
-
-        const basePay = totalHours * rate;
-        const eveningPay = totalEveHours * 25;
-        const currentFritvalg = (basePay + eveningPay) * 0.10;
-        const totalFritvalg = prevFritvalg + currentFritvalg;
-
-        const pension = (basePay + eveningPay) * 0.02;
-        const grossIncome = basePay + eveningPay + (isPayout ? totalFritvalg : 0);
+        const rate = parseFloat(document.getElementById('rate').value) || 0;
+        const prevFritvalg = parseFloat(document.getElementById('prevFritvalg').value) || 0;
+        const isPayoutMonth = document.getElementById('isPayoutMonth').checked;
         
-        const amBasis = grossIncome - pension - atp;
-        const amBidrag = Math.max(0, amBasis * 0.08);
+        const fradrag = parseFloat(document.getElementById('fradrag').value) || 0;
+        const skatPercent = parseFloat(document.getElementById('skatPercent').value) || 38;
+        const pensionPercent = parseFloat(document.getElementById('pensionPercent').value) || 2;
+        const atp = parseFloat(document.getElementById('atp').value) || 66;
+
+        const basePay = totalHoursLogged * rate;
+        const eveningPay = totalEveningHoursLogged * 25;
+        const currentFritvalg = (basePay + eveningPay) * 0.10;
+        
+        const grossHoliday = (basePay + eveningPay) * 0.125;
+        const holidayAM = grossHoliday * 0.08;
+        const holidayAMAfter = grossHoliday - holidayAM;
+        let holidayTaxBasis = Math.floor(holidayAMAfter / 10) * 10;
+        const holidaySkat = holidayTaxBasis * (skatPercent / 100);
+        const netHolidayMoney = holidayAMAfter - holidaySkat;
+
+        let totalFritvalgPayout = 0;
+        if (isPayoutMonth) {
+            totalFritvalgPayout = prevFritvalg + currentFritvalg;
+            document.getElementById('fritvalgPayoutRow').style.display = 'flex';
+        } else {
+            document.getElementById('fritvalgPayoutRow').style.display = 'none';
+        }
+
+        const grossIncome = basePay + eveningPay + totalFritvalgPayout;
+        const pensionDeduction = (basePay + eveningPay) * (pensionPercent / 100);
+        
+        const amBasis = grossIncome - pensionDeduction - atp;
+        const amBidrag = amBasis * 0.08;
         const aIndkomst = amBasis - amBidrag;
         
-        let taxBasis = Math.max(0, aIndkomst - fradrag);
+        let taxBasis = aIndkomst - fradrag;
+        if (taxBasis < 0) taxBasis = 0;
         taxBasis = Math.floor(taxBasis / 10) * 10;
-        const aSkat = taxBasis * 0.38;
+        const aSkat = taxBasis * (skatPercent / 100);
         const netSalary = aIndkomst - aSkat;
 
-        const grossHolidayMoney = (basePay + eveningPay) * 0.125;
-        const netHolidayMoney = grossHolidayMoney * 0.92 * 0.62;
-
-        // Update Dashboard Cards
-        document.getElementById("dashNet").innerText = netSalary.toFixed(2) + " kr.";
-        document.getElementById("dashHours").innerText = totalHours.toFixed(2) + " h";
-        document.getElementById("dashEvening").innerText = totalEveHours.toFixed(2) + " h";
-        document.getElementById("dashFritvalg").innerText = totalFritvalg.toFixed(2) + " kr.";
-
-        // Update Results Breakdown
-        document.getElementById("resBasePay").innerText = basePay.toFixed(2) + " kr.";
-        document.getElementById("resEveningPay").innerText = eveningPay.toFixed(2) + " kr.";
-        document.getElementById("resFritCurrent").innerText = currentFritvalg.toFixed(2) + " kr.";
-        document.getElementById("resPension").innerText = pension.toFixed(2) + " kr.";
-        document.getElementById("resGrossIncome").innerText = grossIncome.toFixed(2) + " kr.";
-        document.getElementById("resAM").innerText = amBidrag.toFixed(2) + " kr.";
-        document.getElementById("resASkat").innerText = aSkat.toFixed(2) + " kr.";
-        document.getElementById("resHoliday").innerText = netHolidayMoney.toFixed(2) + " kr.";
-        document.getElementById("resNetSalary").innerText = "Net Payout: " + netSalary.toFixed(2) + " kr.";
+        document.getElementById('resTotalHours').innerText = totalHoursLogged.toFixed(2) + " hrs";
+        document.getElementById('resTotalEvHours').innerText = totalEveningHoursLogged.toFixed(2) + " hrs";
+        document.getElementById('resBasePay').innerText = basePay.toFixed(2) + " kr.";
+        document.getElementById('resEveningPay').innerText = eveningPay.toFixed(2) + " kr.";
+        document.getElementById('resFritvalgSaved').innerText = currentFritvalg.toFixed(2) + " kr.";
+        document.getElementById('resFritvalgPayout').innerText = totalFritvalgPayout.toFixed(2) + " kr.";
+        document.getElementById('resGrossIncome').innerText = grossIncome.toFixed(2) + " kr.";
+        document.getElementById('resPension').innerText = pensionDeduction.toFixed(2) + " kr.";
+        document.getElementById('resATP').innerText = atp.toFixed(2) + " kr.";
+        document.getElementById('resAMBidrag').innerText = amBidrag.toFixed(2) + " kr.";
+        document.getElementById('resAIndkomst').innerText = aIndkomst.toFixed(2) + " kr.";
+        document.getElementById('resUsedFradrag').innerText = fradrag.toFixed(2) + " kr.";
+        document.getElementById('resASkat').innerText = aSkat.toFixed(2) + " kr.";
+        document.getElementById('resNetSalary').innerText = netSalary.toFixed(2) + " kr.";
         
-        document.getElementById("resultBox").style.display = "block";
+        document.getElementById('resNetHolidayMoney').innerText = netHolidayMoney.toFixed(2) + " kr.";
+        document.getElementById('resGrossHoliday').innerText = grossHoliday.toFixed(2) + " kr.";
+        document.getElementById('resHolidayAM').innerText = holidayAM.toFixed(2) + " kr.";
+        document.getElementById('resHolidaySkat').innerText = holidaySkat.toFixed(2) + " kr.";
 
-        lastCalculatedData = { netSalary, totalHours, totalEveHours, fritvalg: totalFritvalg };
+        document.getElementById('resultBox').style.display = 'block';
     }
 
-    function getPeriodStorageKey() {
-        const month = document.getElementById("salaryMonth").value;
-        const { endYear } = getPeriodYears(parseInt(month));
-        return `salary_period_data_${endYear}_${month}`;
-    }
-
-    function saveCurrentPeriod() {
-        const container = document.getElementById("calendarContainer");
-        const totalDays = parseInt(container.dataset.days) || 0;
-        const periodData = [];
-        for (let i = 0; i < totalDays; i++) {
-            const row = document.getElementById(`tot_${i}`).closest(".day-row");
-            const activeBtn = row.querySelector(".active-morning") ? "morning" :
-                              row.querySelector(".active-evening") ? "evening" :
-                              row.querySelector(".active-off") ? "off" : "custom";
-            periodData.push({
-                tot: document.getElementById(`tot_${i}`).value,
-                eve: document.getElementById(`eve_${i}`).value,
-                activeBtn: activeBtn
-            });
+    function saveToLocalStorage() {
+        const period = document.getElementById('salaryMonth').value;
+        const container = document.getElementById('calendarContainer');
+        const totalDays = parseInt(container.getAttribute('data-days')) || 0;
+        const data = {
+            rate: document.getElementById('rate').value,
+            fradrag: document.getElementById('fradrag').value,
+            prevFritvalg: document.getElementById('prevFritvalg').value,
+            isPayoutMonth: document.getElementById('isPayoutMonth').checked,
+            days: []
+        };
+        for(let i=0; i<totalDays; i++) {
+            const tot = document.getElementById(`totH_${i}`).value;
+            const ev = document.getElementById(`evH_${i}`).value;
+            
+            const row = document.getElementById(`totH_${i}`).parentElement.parentElement;
+            const activeBtn = row.querySelector('.btn-shift.active-morning') ? 'morning' :
+                              row.querySelector('.btn-shift.active-evening') ? 'evening' :
+                              row.querySelector('.btn-shift.active-off') ? 'off' : 'custom';
+            data.days.push({ tot, ev, activeBtn });
         }
-        localStorage.setItem(getPeriodStorageKey(), JSON.stringify(periodData));
+        localStorage.setItem('salary_tracker_period_' + period, JSON.stringify(data));
     }
 
-    function loadCurrentPeriod() {
-        const raw = localStorage.getItem(getPeriodStorageKey());
-        if (!raw) { calculateSalary(); return; }
+    function loadFromLocalStorage() {
+        const period = document.getElementById('salaryMonth').value;
+        const raw = localStorage.getItem('salary_tracker_period_' + period);
+        if(!raw) return;
         try {
             const data = JSON.parse(raw);
-            data.forEach((day, i) => {
-                const tot = document.getElementById(`tot_${i}`);
-                const eve = document.getElementById(`eve_${i}`);
-                if (tot) tot.value = day.tot;
-                if (eve) eve.value = day.eve;
-                if (tot && day.activeBtn && day.activeBtn !== 'custom') {
-                    const row = tot.closest(".day-row");
-                    const buttons = row.getElementsByClassName("shift-btn");
-                    if (day.activeBtn === 'morning') buttons[0].classList.add("active-morning");
-                    if (day.activeBtn === 'evening') buttons[1].classList.add("active-evening");
-                    if (day.activeBtn === 'off') buttons[2].classList.add("active-off");
-                }
-            });
-            calculateSalary();
+            if(data.rate) document.getElementById('rate').value = data.rate;
+            if(data.fradrag) document.getElementById('fradrag').value = data.fradrag;
+            if(data.prevFritvalg) document.getElementById('prevFritvalg').value = data.prevFritvalg;
+            if(data.isPayoutMonth !== undefined) document.getElementById('isPayoutMonth').checked = data.isPayoutMonth;
+            
+            if(data.days) {
+                data.days.forEach((day, i) => {
+                    const totInput = document.getElementById(`totH_${i}`);
+                    const evInput = document.getElementById(`evH_${i}`);
+                    if(totInput) totInput.value = day.tot;
+                    if(evInput) evInput.value = day.ev;
+                    
+                    if(totInput && day.activeBtn && day.activeBtn !== 'custom') {
+                        const row = totInput.parentElement.parentElement;
+                        const buttons = row.getElementsByClassName('btn-shift');
+                        if(day.activeBtn === 'morning') buttons[0].classList.add('active-morning');
+                        if(day.activeBtn === 'evening') buttons[1].classList.add('active-evening');
+                        if(day.activeBtn === 'off') buttons[2].classList.add('active-off');
+                    }
+                });
+            }
+            calculateTotalSalary();
         } catch(e) { console.error(e); }
     }
 
-    function autoSaveSettings() {
-        const settings = {
-            rate: document.getElementById("hourlyRate").value,
-            fradrag: document.getElementById("fradrag").value,
-            prevFritvalg: document.getElementById("previousFritvalg").value,
-            atp: document.getElementById("atp").value,
-            payout: document.getElementById("payoutFritvalg").checked,
-            month: document.getElementById("salaryMonth").value
-        };
-        localStorage.setItem("salary_settings_v3.2", JSON.stringify(settings));
-        localStorage.setItem("shared_prev_fritvalg", settings.prevFritvalg);
+    function setupAutoSaveLoad() {
+        document.getElementById('rate').addEventListener('change', saveToLocalStorage);
+        document.getElementById('fradrag').addEventListener('change', saveToLocalStorage);
+        document.getElementById('prevFritvalg').addEventListener('change', saveToLocalStorage);
+        document.getElementById('isPayoutMonth').addEventListener('change', saveToLocalStorage);
     }
 
-    function loadSettings() {
-        if (localStorage.getItem('theme') === 'dark') {
-            document.body.classList.add("dark");
-            document.querySelector(".theme-btn").innerText = "☀️";
-        }
-        const sharedFritvalg = localStorage.getItem("shared_prev_fritvalg");
-        if (sharedFritvalg !== null) document.getElementById("previousFritvalg").value = sharedFritvalg;
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        const installBtn = document.getElementById('installApp');
+        if (installBtn) installBtn.style.display = 'block';
+    });
 
-        const raw = localStorage.getItem("salary_settings_v3.2");
-        if (!raw) return;
-        try {
-            const settings = JSON.parse(raw);
-            if (settings.rate) document.getElementById("hourlyRate").value = settings.rate;
-            if (settings.fradrag) document.getElementById("fradrag").value = settings.fradrag;
-            if (sharedFritvalg === null && settings.prevFritvalg) document.getElementById("previousFritvalg").value = settings.prevFritvalg;
-            if (settings.atp) document.getElementById("atp").value = settings.atp;
-            if (settings.month) document.getElementById("salaryMonth").value = settings.month;
-            document.getElementById("payoutFritvalg").checked = settings.payout || false;
-        } catch(err) { console.error(err); }
-    }
-
-    document.addEventListener("change", () => { autoSaveSettings(); calculateSalary(); });
-
-    /* HISTORY LOGIC */
-    function saveCurrentMonth() {
-        if (!lastCalculatedData) { alert("Please calculate salary data first!"); return; }
-        const monthSelect = document.getElementById("salaryMonth");
-        const monthText = monthSelect.options[monthSelect.selectedIndex].text;
-
-        const item = {
-            id: Date.now(),
-            month: monthText,
-            date: new Date().toLocaleDateString(),
-            salary: lastCalculatedData.netSalary,
-            hours: lastCalculatedData.totalHours,
-            eveningHours: lastCalculatedData.totalEveHours,
-            fritvalg: lastCalculatedData.fritvalg
-        };
-
-        historyData = historyData.filter(x => x.month !== item.month);
-        historyData.push(item);
-        localStorage.setItem("salaryHistory", JSON.stringify(historyData));
-        renderHistory();
-        updateAnalytics();
-        alert("Saved successfully to history logs!");
-    }
-
-    function renderHistory() {
-        const container = document.getElementById("historyContainer");
-        if (historyData.length === 0) { container.innerHTML = "<div class='empty-history'>No saved records found.</div>"; return; }
-        
-        let html = "";
-        historyData.slice().reverse().forEach(item => {
-            html += `
-            <div class="history-card">
-                <div class="history-header"><strong>${item.month}</strong><span>Logged: ${item.date}</span></div>
-                <div class="history-body">
-                    <div>Salary: <b>${item.salary.toFixed(2)} kr.</b></div>
-                    <div>Total Hours: ${item.hours.toFixed(2)} h</div>
-                    <div>Evening Hours: ${item.eveningHours.toFixed(2)} h</div>
-                    <div>Acc. Fritvalg: ${item.fritvalg.toFixed(2)} kr.</div>
-                </div>
-                <button class="delete-history-btn" onclick="deleteRecord(${item.id})">Delete Statement</button>
-            </div>`;
-        });
-        container.innerHTML = html;
-    }
-
-    function deleteRecord(id) {
-        if (!confirm("Are you sure you want to delete this specific statement?")) return;
-        historyData = historyData.filter(x => x.id !== id);
-        localStorage.setItem("salaryHistory", JSON.stringify(historyData));
-        renderHistory();
-        updateAnalytics();
-    }
-
-    function updateAnalytics() {
-        document.getElementById("totalRecords").innerText = historyData.length;
-        let avg = 0, max = 0, hours = 0;
-        if (historyData.length > 0) {
-            const totalSalary = historyData.reduce((a, b) => a + b.salary, 0);
-            avg = totalSalary / historyData.length;
-            max = Math.max(...historyData.map(x => x.salary));
-            hours = historyData.reduce((a, b) => a + b.hours, 0);
-        }
-        document.getElementById("avgSalary").innerText = avg.toFixed(2) + " kr.";
-        document.getElementById("highestSalary").innerText = max.toFixed(2) + " kr.";
-        document.getElementById("allHours").innerText = hours.toFixed(2) + " h";
-        updateChart();
-    }
-
-    function updateChart() {
-        const ctx = document.getElementById("salaryChart").getContext("2d");
-        const isDark = document.body.classList.contains("dark");
-        const textColor = isDark ? "#f8fafc" : "#1e293b";
-
-        if (salaryChartInstance) salaryChartInstance.destroy();
-
-        salaryChartInstance = new Chart(ctx, {
-            type: "bar",
-            data: {
-                labels: historyData.map(x => x.month.split(' ')[0]),
-                datasets: [{
-                    label: "Net Salary (DKK)",
-                    data: historyData.map(x => x.salary),
-                    backgroundColor: "#27ae60",
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    x: { ticks: { color: textColor } },
-                    y: { ticks: { color: textColor } }
-                },
-                plugins: { legend: { labels: { color: textColor } } }
+    const installBtn = document.getElementById('installApp');
+    if (installBtn) {
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    installBtn.style.display = 'none';
+                }
+                deferredPrompt = null;
             }
         });
     }
 
-    /* DATA TOOLS EXPORTS */
-    function exportCSV() {
-        let csv = "Period,Hours Logged,Evening Hours,Acc Fritvalg (DKK),Net Paid (DKK),Saved Date\n";
-        historyData.forEach(h => { csv += `"${h.month}","${h.hours}","${h.eveningHours}","${h.fritvalg}","${h.salary}","${h.date}"\n`; });
-        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.setAttribute("download", "Salary_Report.csv");
-        link.click();
-    }
-
-    function exportBackup() {
-        const backup = { history: historyData, settings: localStorage.getItem("salary_settings_v3.2") };
-        const blob = new Blob([JSON.stringify(backup, null, 2)], { type: "application/json" });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url; a.download = "salary_backup_v3.2.json"; a.click();
-        URL.revokeObjectURL(url);
-    }
-
-    function restoreBackup(event) {
-        const file = event.target.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            try {
-                const data = JSON.parse(e.target.result);
-                if (data.history) {
-                    historyData = data.history;
-                    localStorage.setItem("salaryHistory", JSON.stringify(historyData));
+    if ('serviceWorker' in navigator) {
+        const swCode = `
+            const CACHE_NAME = 'salary-tracker-v1';
+            self.addEventListener('install', e => self.skipWaiting());
+            self.addEventListener('activate', e => e.waitUntil(clients.claim()));
+            self.addEventListener('fetch', e => {
+                if(e.request.mode === 'navigate') {
+                    e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
                 }
-                renderHistory();
-                updateAnalytics();
-                alert("Backup restored successfully into localized runtime!");
-            } catch(err) { alert("Invalid backup structure."); }
-        };
-        reader.readAsText(file);
+            });
+        `;
+        const blob = new Blob([swCode], { type: 'application/javascript' });
+        const swUrl = URL.createObjectURL(blob);
+        navigator.serviceWorker.register(swUrl).catch(err => console.log('SW registration skipped.'));
     }
-
-    function clearHistory() {
-        if (!confirm("Danger! Delete ALL saved statements and preferences?")) return;
-        localStorage.clear(); historyData = [];
-        generateCalendar(); renderHistory(); updateAnalytics();
-    }
-
-    /* PWA & AUTO BACKUP */
-    let deferredPrompt;
-    window.addEventListener("beforeinstallprompt", (e) => {
-        e.preventDefault(); deferredPrompt = e;
-        const btn = document.getElementById("installApp");
-        if (btn) btn.style.display = "block";
-    });
-
-    document.getElementById("installApp")?.addEventListener("click", async () => {
-        if (!deferredPrompt) return;
-        deferredPrompt.prompt();
-        await deferredPrompt.userChoice;
-        deferredPrompt = null;
-        document.getElementById("installApp").style.display = "none";
-    });
-
-    if ("serviceWorker" in navigator) {
-        const swCode = `const CACHE_NAME='salary-v3.2'; self.addEventListener('install',e=>{self.skipWaiting();}); self.addEventListener('activate',e=>{clients.claim();}); self.addEventListener('fetch',e=>{e.respondWith(fetch(e.request).catch(()=>caches.match(e.request)));});`;
-        const blob = new Blob([swCode], { type: "application/javascript" });
-        navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(() => {});
-    }
-
-    setInterval(() => {
-        localStorage.setItem("salary_auto_backup", JSON.stringify({ history: historyData, created: new Date().toISOString() }));
-    }, 30000);
 </script>
+
 </body>
 </html>
